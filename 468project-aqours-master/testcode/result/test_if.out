@@ -1,0 +1,88 @@
+;IR code
+;LABEL main
+;LINK
+;EOGD
+;LABEL main
+;LINK
+;STOREI 7 $T0
+;STOREI $T0 $-3
+;STOREI 2 $T1
+;STOREI $T1 $-1
+;STOREI 42 $T2
+;STOREI $T2 $-2
+;STOREI 5 $T3
+;GE $-1 $T3 label1
+;ADDI $-3 $-2 $T4
+;STOREI $T4 $-3
+;STOREI 3 $T5
+;GE $-1 $T5 label3
+;ADDI $-3 $-2 $T6
+;STOREI $T6 $-3
+;JUMP label4
+;LABEL label3
+;LABEL label4
+;JUMP label2
+;LABEL label1
+;STOREI 5 $T7
+;LT $-1 $T7 label5
+;SUBI $-3 $-2 $T8
+;STOREI $T8 $-3
+;JUMP label6
+;LABEL label5
+;LABEL label6
+;JUMP label2
+;LABEL label2
+;LABEL label2
+;WRITEI $-3
+;RET
+;NEWLINE
+;RET
+;tiny code
+push
+push r0
+push r1
+push r2
+push r3
+jsr main
+sys halt
+label main
+link 3
+move 7 r0
+move r0 $-3
+move 2 r1
+move r1 $-1
+move 42 r2
+move r2 $-2
+move 5 r3
+cmpi $-1 r3
+jge label1
+move $-3 r4
+addi $-2 r4
+move r4 $-3
+move 3 r5
+cmpi $-1 r5
+jge label3
+move $-3 r6
+addi $-2 r6
+move r6 $-3
+jmp label4
+label label3
+label label4
+jmp label2
+label label1
+move 5 r7
+cmpi $-1 r7
+jlt label5
+move $-3 r8
+subi $-2 r8
+move r8 $-3
+jmp label6
+label label5
+label label6
+jmp label2
+label label2
+label label2
+sys writei $-3
+unlnk
+ret
+end

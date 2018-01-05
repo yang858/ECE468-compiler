@@ -1,0 +1,232 @@
+;*****Start Unoptimized IR Code*****
+;0>> STOREF 0.0001 $T0
+;1>> STOREF $T0 tolerance
+;2>> READF num
+;3>> STOREF num approx
+;4>> STOREI 0 $T1
+;5>> STOREI $T1 count
+;6>> STOREF 0.0 $T2
+;7>> STOREF $T2 diff
+;8>> STOREI 0 $T3
+;9>> STOREI $T3 enough
+;10>> LABEL FOR_START_L0
+;11>> STOREI 1 $T4
+;12>> EQ enough $T4 FOR_OUT_L0
+;13>> STOREI 1 $T5
+;14>> ADDI count $T5 $T6
+;15>> STOREI $T6 count
+;16>> STOREF 0.5 $T7
+;17>> DIVF num approx $T8
+;18>> ADDF approx $T8 $T9
+;19>> MULTF $T7 $T9 $T10
+;20>> STOREF $T10 newapprox
+;21>> SUBF approx newapprox $T11
+;22>> STOREF $T11 diff
+;23>> STOREF 0.0 $T12
+;24>> LE diff $T12 IF_ELSE_L2
+;25>> GE diff tolerance IF_ELSE_L0
+;26>> STOREI 1 $T13
+;27>> STOREI $T13 enough
+;28>> JUMP IF_END_L0
+;29>> LABEL IF_ELSE_L0
+;30>> LABEL IF_END_L0
+;31>> JUMP IF_END_L2
+;32>> LABEL IF_ELSE_L2
+;33>> STOREF 0.0 $T14
+;34>> SUBF $T14 tolerance $T15
+;35>> LE diff $T15 IF_ELSE_L1
+;36>> STOREI 1 $T16
+;37>> STOREI $T16 enough
+;38>> JUMP IF_END_L1
+;39>> LABEL IF_ELSE_L1
+;40>> LABEL IF_END_L1
+;41>> LABEL IF_END_L2
+;42>> STOREF newapprox approx
+;43>> LABEL FOR_INC_L0
+;44>> JUMP FOR_START_L0
+;45>> LABEL FOR_OUT_L0
+;46>> WRITEF approx
+;47>> WRITES space
+;48>> WRITEI count
+;49>> WRITES eol
+;*****End Unoptimized IR Code*****
+;*****Start Unoptimized Tiny Code*****
+;var count
+;var enough
+;var newapprox
+;var approx
+;var num
+;var tolerance
+;var diff
+;str eol "\n"
+;str space " "
+;move 0.0001 r0
+;move r0 tolerance
+;sys readr num
+;move num r17
+;move r17 approx
+;move 0 r1
+;move r1 count
+;move 0.0 r2
+;move r2 diff
+;move 0 r3
+;move r3 enough
+;label FOR_START_L0
+;move 1 r4
+;cmpi enough r4
+;jeq FOR_OUT_L0
+;move 1 r5
+;move count r6
+;addi r5 r6
+;move r6 count
+;move 0.5 r7
+;move num r8
+;divr approx r8
+;move approx r9
+;addr r8 r9
+;move r7 r10
+;mulr r9 r10
+;move r10 newapprox
+;move approx r11
+;subr newapprox r11
+;move r11 diff
+;move 0.0 r12
+;cmpr diff r12
+;jle IF_ELSE_L2
+;move tolerance r18
+;cmpr diff r18
+;jge IF_ELSE_L0
+;move 1 r13
+;move r13 enough
+;jmp IF_END_L0
+;label IF_ELSE_L0
+;label IF_END_L0
+;jmp IF_END_L2
+;label IF_ELSE_L2
+;move 0.0 r14
+;move r14 r15
+;subr tolerance r15
+;cmpr diff r15
+;jle IF_ELSE_L1
+;move 1 r16
+;move r16 enough
+;jmp IF_END_L1
+;label IF_ELSE_L1
+;label IF_END_L1
+;label IF_END_L2
+;move newapprox r19
+;move r19 approx
+;label FOR_INC_L0
+;jmp FOR_START_L0
+;label FOR_OUT_L0
+;sys writer approx
+;sys writes space
+;sys writei count
+;sys writes eol
+;sys halt
+;end
+;*****End Unoptimized Tiny Code*****
+;*****Start Optimized IR Code*****
+;0>> STOREF 0.0001 tolerance
+;1>> READF num
+;2>> STOREF num approx
+;3>> STOREI 0 count
+;4>> STOREI 0 enough
+;5>> LABEL FOR_START_L0
+;6>> EQ enough 1 FOR_OUT_L0
+;7>> ADDI count 1 $T6
+;8>> STOREI $T6 count
+;9>> DIVF num approx $T8
+;10>> ADDF approx $T8 $T9
+;11>> MULTF 0.5 $T9 $T10
+;12>> STOREF $T10 newapprox
+;13>> SUBF approx $T10 $T11
+;14>> STOREF $T11 diff
+;15>> LE $T11 0.0 IF_ELSE_L2
+;16>> GE $T11 tolerance IF_ELSE_L0
+;17>> STOREI 1 enough
+;18>> JUMP IF_END_L0
+;19>> LABEL IF_ELSE_L0
+;20>> LABEL IF_END_L0
+;21>> JUMP IF_END_L2
+;22>> LABEL IF_ELSE_L2
+;23>> SUBF 0.0 tolerance $T15
+;24>> LE diff $T15 IF_ELSE_L1
+;25>> STOREI 1 enough
+;26>> JUMP IF_END_L1
+;27>> LABEL IF_ELSE_L1
+;28>> LABEL IF_END_L1
+;29>> LABEL IF_END_L2
+;30>> STOREF newapprox approx
+;31>> JUMP FOR_START_L0
+;32>> LABEL FOR_OUT_L0
+;33>> WRITEF approx
+;34>> WRITES space
+;35>> WRITEI count
+;36>> WRITES eol
+;*****End Optimized IR Code*****
+;*****Start Optimized Tiny Code*****
+var count
+var enough
+var newapprox
+var approx
+var num
+var tolerance
+var diff
+str eol "\n"
+str space " "
+move 0.0001 tolerance
+sys readr num
+move num r20
+move r20 approx
+move 0 count
+move 0 enough
+label FOR_START_L0
+move 1 r21
+cmpi enough r21
+jeq FOR_OUT_L0
+move count r6
+addi 1 r6
+move r6 count
+move num r8
+divr approx r8
+move approx r9
+addr r8 r9
+move 0.5 r10
+mulr r9 r10
+move r10 newapprox
+move approx r11
+subr r10 r11
+move r11 diff
+move 0.0 r22
+cmpr r11 r22
+jle IF_ELSE_L2
+move tolerance r23
+cmpr r11 r23
+jge IF_ELSE_L0
+move 1 enough
+jmp IF_END_L0
+label IF_ELSE_L0
+label IF_END_L0
+jmp IF_END_L2
+label IF_ELSE_L2
+move 0.0 r15
+subr tolerance r15
+cmpr diff r15
+jle IF_ELSE_L1
+move 1 enough
+jmp IF_END_L1
+label IF_ELSE_L1
+label IF_END_L1
+label IF_END_L2
+move newapprox r24
+move r24 approx
+jmp FOR_START_L0
+label FOR_OUT_L0
+sys writer approx
+sys writes space
+sys writei count
+sys writes eol
+sys halt
+end
+;*****End Optimized Tiny Code*****

@@ -1,0 +1,33 @@
+#!/bin/bash
+export CLASSPATH=classes/:lib/antlr-4.7-complete.jar
+if [ $# != 2 ]
+then
+    echo "Illegal number of arguments"
+    
+else
+    if [ ! -f $1 ] 
+    then
+	echo "Input file nor found!"
+    else
+	if [ -f $2 ]
+	then
+	    read -p "Filename existed, Y to delete the original file, N to create with different filename: " -n 1 -r
+	    if [[ $REPLY =~ ^[Yy]$  ]]
+	    then 
+		rm -rf $2
+		java -cp $CLASSPATH:classes/ Micro $1 > $2
+		echo
+	    else
+		echo
+		read -p "Please input another filename: " filename
+		while [ -f $filename ]
+		do
+		    read -p "Filename existed, please input another filename: " filename
+		done
+		java -cp $CLASSPATH:classes/ Micro $1 > $filename
+	    fi
+	else
+	    java -cp $CLASSPATH:classes/ Micro $1 > $2
+	fi
+    fi
+fi

@@ -1,0 +1,77 @@
+;IR code
+;LABEL main
+;LINK
+;STRING eol "\n"
+;EOGD
+;LABEL main
+;LINK
+;READF $-5
+;STOREI 1 $T0
+;STOREI $T0 $-2
+;STOREF num $-4
+;STOREI 100 $T1
+;STOREI $T1 $-1
+;LABEL label1
+;STOREI 0 $T2
+;EQ $-1 $T2 label2
+;STOREF 0.5 $T5
+;DIVF $-5 $-4 $T6
+;ADDF $-4 $T6 $T7
+;MULTF $T5 $T7 $T8
+;STOREF $T8 $-3
+;STOREF newapprox $-4
+;LABEL label3
+;STOREI 1 $T3
+;SUBI $-1 $T3 $T4
+;STOREI $T4 $-1
+;JUMP label1
+;LABEL label2
+;WRITEF $-4
+;WRITES eol
+;RET
+;NEWLINE
+;RET
+;tiny code
+str eol "\n"
+push
+push r0
+push r1
+push r2
+push r3
+jsr main
+sys halt
+label main
+link 5
+sys readr $-5
+move 1 r0
+move r0 $-2
+move $-5 r1
+move r1 $-4
+move 100 r1
+move r1 $-1
+label label1
+move 0 r2
+cmpi $-1 r2
+jeq label2
+move 0.5 r5
+move $-5 r6
+divr $-4 r6
+move $-4 r7
+addr r6 r7
+move r5 r8
+mulr r7 r8
+move r8 $-3
+move $-3 r2
+move r2 $-4
+label label3
+move 1 r3
+move $-1 r4
+subi r3 r4
+move r4 $-1
+jmp label1
+label label2
+sys writer $-4
+sys writes eol
+unlnk
+ret
+end

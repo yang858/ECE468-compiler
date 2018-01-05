@@ -1,0 +1,30 @@
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.*;
+public class Micro {
+	public static void main(String[] args) throws Exception {
+		CharStream filename = new ANTLRFileStream(args[0]);
+		MicroLexer microLexer = new MicroLexer(filename);
+		CommonTokenStream token = new CommonTokenStream(microLexer);
+		MicroParser parser = new MicroParser(token);
+		ANTLRErrorStrategy error = new CustomErrorStrategy();
+		parser.setErrorHandler(error);
+		try {
+			ParseTree parseTree = parser.program();
+			MyMicroListener myMicroListener = new MyMicroListener();
+			ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+			parseTreeWalker.walk(myMicroListener, parseTree);
+			// System.out.println("Accepted");
+
+		} catch (Exception e) {
+			System.out.println("Not accepted");
+		}
+	}
+}
+
+class CustomErrorStrategy extends DefaultErrorStrategy {
+	@Override
+	public void reportError(Parser recognizer, RecognitionException e) {
+		throw e;
+
+	}
+}

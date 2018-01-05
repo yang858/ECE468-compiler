@@ -1,0 +1,110 @@
+import java.util.LinkedHashMap;
+import java.util.Stack;
+
+public class OverallSymbolTable {
+	public static Stack<SymbolTable> varTable = new Stack<SymbolTable>();
+	private static int blockCount = 0;
+	
+	public static void createGlobal() {
+		varTable.push(new SymbolTable("GLOBAL"));
+		//System.out.println("Symbol table GLOBAL");
+	}
+	
+	public static void createFunction(String functionName) {
+		varTable.push(new SymbolTable(functionName));
+		//System.out.println("\nSymbol table " + functionName);
+	}
+	
+	public static void createStatementBlock() {
+		blockCount++;
+		varTable.push(new SymbolTable("BLOCK " + blockCount));
+		//System.out.println("\nSymbol table BLOCK " + blockCount);
+	}
+	
+	public static void insertStack(String inputName, String inputType, String inputVal) {
+		SymbolTable st = varTable.pop();
+		if (inputType == "STRING") {
+			SymbolObject newObject = new SymbolObject(inputType, inputName, inputVal);
+			st.addEntry(newObject);
+			varTable.push(st);
+		} else {
+			SymbolObject newObject = new SymbolObject(inputType, inputName, null);
+			st.addEntry(newObject);
+			varTable.push(st);
+		}
+	}
+}
+class SymbolObject {
+	private String var_type, var_name, str_val;
+	
+	public SymbolObject(String type, String name, String val) {
+		this.var_type = type;
+		this.var_name = name;
+		if (type == "STRING") this.str_val = val;
+		else this.str_val = null;
+	}
+	
+	public String getType() {
+		return this.var_type;
+	}
+	
+	public String getName() {
+		return this.var_name;
+	}
+	
+	public String getVal() {
+		return this.str_val;
+	}
+	
+	public void setVal(String value) {
+		this.str_val = value;
+	}
+}
+
+class SymbolTable {
+	private String scopeID;
+	private LinkedHashMap<String, SymbolObject> entry;
+	
+	public SymbolTable(String scopeName) {
+		this.scopeID = scopeName;
+		this.entry = new LinkedHashMap<String, SymbolObject>();
+	}
+	
+	public String getScope() {
+		return this.scopeID;
+	}
+	
+	public LinkedHashMap<String, SymbolObject> getEntry() {
+		return this.entry;
+	}
+	
+	public void addEntry(SymbolObject newVar) {
+		if(this.entry.containsKey(newVar.getName())){
+			System.out.println("DECLARATION ERROR " + newVar.getName());
+			System.exit(0);		
+		}else{
+			this.entry.put(newVar.getName(), newVar);
+		}
+	}
+	
+	public void printTable() {
+		if (!this.scopeID.equals("GLOBAL")){
+			System.out.println("");
+		}
+		System.out.println("Symbol table " + this.scopeID);
+		for (String id : this.entry.keySet()) {
+			String[] names = this.entry.get(id).getName().trim().split(",");
+			if (this.entry.get(id).getType() == "STRING") {
+				for (int i = 0; i < names.length; i++) {
+					System.out.println("name " + names[i] + " type " + this.entry.get(id).getType() + " value " + this.entry.get(id).getVal());
+				}
+			} else {
+				for (int i = 0; i < names.length; i++) {
+					System.out.println("name " + names[i] + " type " + this.entry.get(id).getType());
+				}
+			}
+		}
+		
+	}
+	
+}

@@ -1,0 +1,152 @@
+;IR code
+;LABEL main
+;LINK
+;STRING intro "You will be asked for three float numbers\n"
+;STRING first "Please enter the first float number: "
+;STRING second "Please enter the second float number: "
+;STRING third "Please enter the third float number: "
+;STRING eol "\n"
+;STRING star "*"
+;STRING plus "+"
+;STRING equal "="
+;EOGD
+;LABEL add
+;LINK
+;ADDF $1 $2 $T0
+;STOREF $T0 $-1
+;STOREF $-1 $R
+;RET
+;NEWLINE
+;LABEL multiply
+;LINK
+;MULTF $1 $2 $T1
+;STOREF $T1 $-1
+;STOREF $-1 $R
+;RET
+;NEWLINE
+;LABEL main
+;LINK
+;WRITES intro
+;WRITES first
+;READF $-1
+;WRITES second
+;READF $-2
+;WRITES third
+;READF $-3
+;PUSH
+;PUSH $-1
+;PUSH $-2
+;JSR multiply
+;POP
+;POP
+;POP r1
+;STOREF r1 $-5
+;PUSH
+;PUSH $-5
+;PUSH $-3
+;JSR add
+;POP
+;POP
+;POP r2
+;STOREF r2 $-4
+;WRITEF $-1
+;WRITES star
+;WRITEF $-2
+;WRITES plus
+;WRITEF $-3
+;WRITES equal
+;WRITEF $-4
+;WRITES eol
+;STOREI 0 $T3
+;STOREI $T3 $R
+;RET
+;NEWLINE
+;RET
+;tiny code
+str intro "You will be asked for three float numbers\n"
+str first "Please enter the first float number: "
+str second "Please enter the second float number: "
+str third "Please enter the third float number: "
+str eol "\n"
+str star "*"
+str plus "+"
+str equal "="
+push
+push r0
+push r1
+push r2
+push r3
+jsr main
+sys halt
+label add
+link 2
+move $1 r0
+addr $2 r0
+move r0 $-1
+move $-1 r1
+move r1 $2
+unlnk
+ret
+label multiply
+link 2
+move $1 r1
+mulr $2 r1
+move r1 $-1
+move $-1 r2
+move r2 $2
+unlnk
+ret
+label main
+link 0
+sys writes intro
+sys writes first
+sys readr $-1
+sys writes second
+sys readr $-2
+sys writes third
+sys readr $-3
+push
+push $-1
+push $-2
+push r0
+push r1
+push r2
+push r3
+jsr multiply
+pop r3
+pop r2
+pop r1
+pop r0
+pop
+pop
+pop r1
+move r1 $-5
+push
+push $-5
+push $-3
+push r0
+push r1
+push r2
+push r3
+jsr add
+pop r3
+pop r2
+pop r1
+pop r0
+pop
+pop
+pop r2
+move r2 $-4
+sys writer $-1
+sys writes star
+sys writer $-2
+sys writes plus
+sys writer $-3
+sys writes equal
+sys writer $-4
+sys writes eol
+move 0 r3
+move r3 $0
+unlnk
+ret
+sys halt
